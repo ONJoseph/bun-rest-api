@@ -52,8 +52,8 @@ const app = new Elysia()
   app.group('/v1', app => app
   .get('/', () => "Version 1")
   .group('/products', app => app
-  .post('/', () => "Create Product")
-  .get('/:id', () => "UPDATE Product by id")
+  .post('/', () => "Create PRODUCT")
+  .get('/:id', () => "UPDATE PRODUCT by id")
   .get('/:id', ({params: {id}}) => {
     return id
   },
