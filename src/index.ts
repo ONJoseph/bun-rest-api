@@ -1,10 +1,37 @@
-import { Elysia } from "elysia";
+import { Elysia, getSchemaValidator } from "elysia";
 
 const app = new Elysia()
   .get("/", () => "Hello Bun Dev, I am going to build RESTful APIs")
+  .state({
+    id: 1,
+    email: 'jane@gmail.com'
+  })
+  .decorate('getDate', () => Date.now())
   .get('/post/:id', ({ params: { id } }) => {
     return { id, title: 'Learn Bun!' };
   })
+  .post('/post', ({body, set, store}) => {
+    console.log(store)
+    set.status = 201
+    return body
+  })
+  .get('/track/*', () => {return 'Track Route'})
+  .get('/tracks', ({store, getDate}) => {
+    console.log(store)
+    console.log(getDate())
+    return new Response(JSON.stringify({
+      "tracks": [
+        'Dancing Feat',
+        'San I',
+        'Animals',
+        'New Song'
+      ]
+    }), {
+      headers:{
+        'Content-Type': 'application/json'
+    }
+    })
+  }) 
   .listen(3000);
 
 console.log(
