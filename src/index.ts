@@ -1,5 +1,6 @@
-import { Elysia } from "elysia";
+import { Elysia, t} from "elysia";
 import { plugin } from "./plugin"
+import { signinDTO } from "./models";
 
 // Application
 const app = new Elysia()
@@ -37,20 +38,32 @@ const app = new Elysia()
     })
   }) 
 
-  // version
+  // user
   app.group('/user', app => app
-  .post('/sign-in', () => "Signin Route")
+  .post('/sign-in', ({body}) => body, {
+    body: signinDTO,
+    response: signinDTO
+  })
   .post('/sign-up', () => "Signup Route")
   .post('/profile', () => "Profile Route")
-  .get('/:id', () =>'User by id')
+  .get('/id', () => 'User by id Route')
   )
 
   app.group('/v1', app => app
   .get('/', () => "Version 1")
   .group('/products', app => app
   .post('/', () => "Create Product")
-  .get('/:id', () => "GET PRODUCT BY ID")
-  .put(':/id', () => "UPDATE Product byid")
+  .get('/:id', () => "UPDATE Product by id")
+  .get('/:id', ({params: {id}}) => {
+    return id
+  },
+  {
+    params: t.Object({
+      id: t.Numeric()
+    })
+  }
+  )
+  .put(':/id', () => "UPDATE Product by id")
   .delete('/:id', () => "DELETE Product by id")
   )
   )
