@@ -1,7 +1,10 @@
-import { Elysia, getSchemaValidator } from "elysia";
+import { Elysia } from "elysia";
+import { plugin } from "./plugin"
 
+// Application
 const app = new Elysia()
   .get("/", () => "Hello Bun Dev, I am going to build RESTful APIs")
+  .use(plugin)
   .state({
     id: 1,
     email: 'jane@gmail.com'
@@ -19,6 +22,7 @@ const app = new Elysia()
   .get('/tracks', ({store, getDate}) => {
     console.log(store)
     console.log(getDate())
+    console.log(store['plugin-version'])
     return new Response(JSON.stringify({
       "tracks": [
         'Dancing Feat',
